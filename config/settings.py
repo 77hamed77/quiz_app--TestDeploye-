@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-**w1k-d3(c)n3^de19!i==fy%b0n%3&1*ot=p8)6#8hoe0z=a2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -33,6 +33,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -103,18 +104,11 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
+#هذا المجلد هو الذي سيجمع فيه Render الملفات عند الرفع
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = 'static/'
-
-# أضف هذا الجزء ليعرف جانغو أن هناك مجلد اسمه static في المجلد الرئيسي
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-]
+#تفعيل ضغط الملفات لتسريع الموقع
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

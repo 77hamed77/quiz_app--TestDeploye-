@@ -1,3 +1,8 @@
-django
-psycopg2-binary
+asgiref
 dj-database-url
+Django
+gunicorn
+packaging
+psycopg2-binary
+sqlparse
+whitenoise
