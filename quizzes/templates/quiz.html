@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="max-w-3xl mx-auto">
+        <!-- رأس الاختبار -->
+        <div class="bg-white dark:bg-sham-blue p-6 rounded-t-2xl shadow-sm border-b-4 border-sham-gold mb-6">
+            <h1 class="text-3xl font-bold text-sham-blue dark:text-white">{{ quiz.title }}</h1>
+            <p class="text-gray-500 dark:text-sham-gold mt-2 font-semibold">عدد الأسئلة: {{ quiz.questions.count }}</p>
+        </div>
+        
+        <form method="post" class="space-y-6">
+            {% csrf_token %}
+            
+            {% for question in quiz.questions.all %}
+                <div class="bg-white dark:bg-sham-blue p-6 rounded-xl shadow-md border border-gray-100 dark:border-gray-700">
+                    <h3 class="text-lg font-bold text-gray-800 dark:text-white mb-5 flex items-start">
+                        <span class="bg-sham-gold text-white text-sm px-3 py-1 rounded ml-3 mt-1 shadow-sm">
+                            {{ forloop.counter }}
+                        </span>
+                        {{ question.text }}
+                    </h3>
+                    
+                    <div class="space-y-3 mr-2">
+                        {% for choice in question.choices.all %}
+                            <label class="flex items-center p-4 bg-sham-light dark:bg-sham-dark/50 border border-transparent dark:border-gray-600 rounded-lg cursor-pointer hover:bg-blue-100 dark:hover:bg-sham-dark transition group">
+                                <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" required 
+                                       class="w-5 h-5 text-sham-blue focus:ring-sham-gold bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600">
+                                <span class="mr-3 text-gray-700 dark:text-gray-200 group-hover:text-sham-blue dark:group-hover:text-sham-gold font-medium">
+                                    {{ choice.text }}
+                                </span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            
+            <div class="pt-4 pb-8">
+                <button type="submit" class="w-full bg-sham-gold hover:bg-yellow-700 text-white font-bold text-lg py-4 px-6 rounded-xl shadow-lg transition transform hover:-translate-y-1">
+                    إرسال الإجابات 📤
+                </button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

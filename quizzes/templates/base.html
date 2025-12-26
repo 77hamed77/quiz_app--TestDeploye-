@@ -1,0 +1,138 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جامعة الشام العالمية - منصة الاختبارات</title>
+    
+    <!-- استدعاء Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- إعداد الألوان والوضع الليلي -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        sham: {
+                            blue: '#183b65',   // أزرق الشام الرئيسي
+                            dark: '#082c58',   // أزرق غامق للخلفية الليلية
+                            gold: '#b9955c',   // الذهبي المميز
+                            light: '#f5f8ff',  // أزرق فاتح جداً للخلفية النهارية
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- خط Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+        /* تأثير ناعم عند تغيير الألوان */
+        body, div, nav, a, p, h1, h2, h3 { transition: background-color 0.3s, color 0.3s; }
+    </style>
+
+    <!-- سكربت لتذكر وضع المستخدم (ليلي/نهاري) -->
+    <script>
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</head>
+<body class="bg-sham-light text-gray-900 dark:bg-sham-dark dark:text-white flex flex-col min-h-screen">
+
+    <!-- شريط التنقل (Navbar) -->
+    <nav class="bg-sham-blue shadow-lg border-b-4 border-sham-gold">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            
+            <!-- الشعار والعنوان -->
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                <!-- مكان اللوغو: استبدل الرابط برابط الشعار الحقيقي لاحقاً -->
+                <div class="bg-white p-1 rounded-full h-12 w-12 flex items-center justify-center overflow-hidden border-2 border-sham-gold">
+                    <!-- أيقونة مؤقتة حتى تضع الشعار -->
+                    <span class="text-2xl">
+                        <!-- لاحظ إضافة images/ قبل اسم الصورة -->
+                        <img src="{% static 'images/logosham.png' %}" alt="Logo" class="h-full w-full object-contain">
+                    </span> 
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-white font-bold text-lg leading-tight group-hover:text-sham-gold transition">جامعة الشام العالمية</span>
+                    <span class="text-blue-200 text-xs">منصة الاختبارات الطلابية</span>
+                </div>
+            </a>
+
+            <!-- زر تبديل الوضع (Dark Mode Toggle) -->
+            <button id="theme-toggle" type="button" class="text-white hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-sham-gold rounded-lg text-sm p-2.5">
+                <!-- أيقونة القمر (للوضع النهاري) -->
+                <svg id="theme-toggle-dark-icon" class="hidden w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+                <!-- أيقونة الشمس (للوضع الليلي) -->
+                <svg id="theme-toggle-light-icon" class="hidden w-6 h-6 text-sham-gold" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 100 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- المحتوى -->
+    <div class="container mx-auto px-4 py-8 flex-grow">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- التذييل -->
+    <footer class="bg-sham-blue text-white py-6 mt-auto border-t-4 border-sham-gold">
+        <div class="text-center">
+            <p class="text-sm opacity-80">&copy; 2025 جامعة الشام العالمية - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <!-- سكربت تشغيل زر التبديل -->
+    <script>
+        var themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+        var themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+        // تغيير الأيقونة بناءً على الوضع الحالي
+        if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            themeToggleLightIcon.classList.remove('hidden');
+        } else {
+            themeToggleDarkIcon.classList.remove('hidden');
+        }
+
+        var themeToggleBtn = document.getElementById('theme-toggle');
+
+        themeToggleBtn.addEventListener('click', function() {
+            // تبديل الأيقونات
+            themeToggleDarkIcon.classList.toggle('hidden');
+            themeToggleLightIcon.classList.toggle('hidden');
+
+            // تبديل الوضع في HTML
+            if (localStorage.getItem('color-theme')) {
+                if (localStorage.getItem('color-theme') === 'light') {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                }
+            } else {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('color-theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('color-theme', 'dark');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-sham-blue dark:text-sham-gold mb-3">الاختبارات المتاحة</h1>
+        <p class="text-gray-600 dark:text-gray-300 text-lg">أهلاً بك عزيزي الطالب، اختر الاختبار للبدء</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for quiz in quizzes %}
+            <!-- البطاقة: بيضاء في النهار، زرقاء في الليل -->
+            <div class="bg-white dark:bg-sham-blue rounded-xl shadow-md overflow-hidden hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-sham-gold/30 group">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="bg-sham-light dark:bg-sham-dark text-sham-blue dark:text-sham-gold text-xs font-bold px-3 py-1 rounded-full">
+                            اختبار قصير
+                        </span>
+                        <span class="text-2xl group-hover:scale-110 transition">📝</span>
+                    </div>
+                    
+                    <h2 class="text-xl font-bold text-gray-800 dark:text-white mb-2 group-hover:text-sham-gold transition">
+                        {{ quiz.title }}
+                    </h2>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 line-clamp-3">
+                        {{ quiz.description }}
+                    </p>
+                    
+                    <a href="{% url 'take_quiz' quiz.id %}" class="block w-full text-center bg-sham-blue hover:bg-sham-dark dark:bg-sham-gold dark:hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        ابدأ الاختبار
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-span-full text-center py-16 bg-white dark:bg-sham-blue rounded-xl shadow-sm border dark:border-gray-700">
+                <p class="text-gray-500 dark:text-gray-300 text-xl">لا توجد اختبارات متاحة حالياً.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
